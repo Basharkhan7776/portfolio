@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { supabase } from "@/lib/supabaseClient";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Resume() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ export default function Resume() {
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [driveLink, setDriveLink] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSendOTP = async () => {
     if (!email || !email.includes("@")) {
@@ -29,6 +31,7 @@ export default function Resume() {
     const message = `New Resume Request:\n Email: ${email}`;
 
     try {
+      setLoading(true);
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: "POST",
         headers: {
@@ -47,6 +50,7 @@ export default function Resume() {
         toast.success("OTP sent to your email!");
         setShowOTP(true);
       }
+      setLoading(false);
     } catch (error) {
       console.error("Error sending Email:", error);
       toast.error("An error occurred while sending the Email");
@@ -60,6 +64,7 @@ export default function Resume() {
     }
   
     try {
+      setLoading(true);
       const { error } = await supabase.auth.verifyOtp({
         email,
         token: otp,
@@ -72,6 +77,7 @@ export default function Resume() {
         toast.success("Email verified successfully!");
         setVerified(true);
       }
+      setLoading(false);
     } catch (error) {
       console.error("Error verifying OTP:", error);
       toast.error("An error occurred while verifying the OTP");
@@ -116,8 +122,12 @@ export default function Resume() {
                         onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
-                    <Button className="w-full" onClick={handleSendOTP}>
-                      Send OTP
+                    <Button 
+                    className="w-full" 
+                    onClick={handleSendOTP}
+                    disabled={!email || loading}
+                    >
+                      {loading ? <Spinner variant="ellipsis"/> : "Send OTP"}
                     </Button>
                   </div>
                 ) : (
@@ -148,8 +158,11 @@ export default function Resume() {
                       <Button variant="outline" className="flex-1" onClick={() => setShowOTP(false)}>
                         Back
                       </Button>
-                      <Button className="flex-1" onClick={handleVerifyOTP}>
-                        Verify OTP
+                      <Button 
+                      className="flex-1" onClick={handleVerifyOTP}
+                      disabled={otp.length !== 6 || loading}
+                      >
+                        {loading ? <Spinner variant="ellipsis"/> : "Verify OTP"}
                       </Button>
                     </div>
                   </motion.div>
