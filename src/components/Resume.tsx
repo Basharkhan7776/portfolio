@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function Resume() {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [showOTP, setShowOTP] = useState(false);
   const [otp, setOtp] = useState("");
   const [verified, setVerified] = useState(false);
@@ -17,16 +18,15 @@ export default function Resume() {
   const [message, setMessage] = useState("");
 
   const handleSendOTP = async () => {
-    // Simple phone number validation
-    if (!phoneNumber || phoneNumber.length < 10) {
-      toast.error("Please enter a valid phone number");
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email address");
       return;
     }
 
     // Send phone number to Telegram bot
     const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
     const chatId = import.meta.env.VITE_TELEGRAM_BOT_CHAT_ID;
-    const message = `New Resume Request:\nPhone Number: ${phoneNumber}`;
+    const message = `New Resume Request:\n Email: ${email}`;
 
     try {
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -40,28 +40,42 @@ export default function Resume() {
         }),
       });
 
-      if (response.ok) {
-        toast.success("OTP sent to your phone number!");
-        setShowOTP(true);
+      const { error } = await supabase.auth.signInWithOtp({ email });
+      if (error) {
+        toast.error("Failed to send OTP");
       } else {
-        toast.error("Failed to send phone number to Telegram");
+        toast.success("OTP sent to your email!");
+        setShowOTP(true);
       }
     } catch (error) {
-      console.error("Error sending phone number to Telegram:", error);
-      toast.error("An error occurred while sending the phone number");
+      console.error("Error sending Email:", error);
+      toast.error("An error occurred while sending the Email");
     }
   };
 
   const handleVerifyOTP = async () => {
-    // For demo purposes, any 6-digit OTP is valid
     if (!otp || otp.length !== 6) {
       toast.error("Please enter a valid 6-digit OTP");
       return;
     }
-
-    // Simulate OTP verification
-    toast.success("OTP verified successfully!");
-    setVerified(true);
+  
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token: otp,
+        type: "email",
+      });
+  
+      if (error) {
+        toast.error("Failed to verify OTP. Please try again.");
+      } else {
+        toast.success("Email verified successfully!");
+        setVerified(true);
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      toast.error("An error occurred while verifying the OTP");
+    }
   };
 
   const handleDownloadResume = () => {
@@ -83,23 +97,23 @@ export default function Resume() {
           <Card className="p-6 border border-border">
             {!verified ? (
               <>
-                <h3 className="text-xl font-medium mb-6 text-center">Verify Your Number</h3>
+                <h3 className="text-xl font-medium mb-6 text-center">Verify Your Email</h3>
                 <p className="text-muted-foreground text-center mb-6">
-                  To access my resume, please verify your phone number with an OTP.
+                  To access my resume, please verify your email with an OTP.
                 </p>
 
                 {!showOTP ? (
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <label htmlFor="phone" className="text-sm font-medium">
-                        Phone Number
+                        Email
                       </label>
                       <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="Enter your phone number"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        id="email"
+                        type="email"
+                        placeholder="Enter your Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                     <Button className="w-full" onClick={handleSendOTP}>
@@ -115,7 +129,7 @@ export default function Resume() {
                   >
                     <div className="space-y-2">
                       <label className="text-sm font-medium">
-                        Enter OTP sent to {phoneNumber}
+                        Enter OTP sent to {email}
                       </label>
                       <div className="flex justify-center">
                         <InputOTP maxLength={6} value={otp} onChange={setOtp}>

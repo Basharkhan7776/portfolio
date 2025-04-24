@@ -29,8 +29,8 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN; // Replace with your bot token
-    const chatId = import.meta.env.VITE_TELEGRAM_BOT_CHAT_ID; // Replace with your chat ID
+    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN; 
+    const chatId = import.meta.env.VITE_TELEGRAM_BOT_CHAT_ID; 
     const message = `
       New Contact Form Submission:
       - Name: ${formData.name}

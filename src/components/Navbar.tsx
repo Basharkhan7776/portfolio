@@ -43,13 +43,14 @@ export default function Navbar() {
   }, [location.pathname]);
 
   const navVariants = {
-    hidden: { opacity: 0, y: -20 },
+    hidden: { opacity: 0.4, y: -90 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-        ease: "easeInOut"
+        type: "spring",
+        stiffness: 300,
+        damping: 40,
       },
     },
   };
@@ -70,7 +71,7 @@ export default function Navbar() {
       initial="hidden"
       animate="visible"
       variants={navVariants}
-      className={`fixed w-full top-0 left-0 z-50 transition-all duration-300 flex justify-center py-2`}
+      className={`fixed w-full top-0 left-0 z-50  flex justify-center py-2`}
     >
       <motion.div
         variants={containerVariants}
