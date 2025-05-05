@@ -110,27 +110,25 @@ export default function Resume() {
                 </p>
 
                 {!showOTP ? (
-                  <div className="space-y-4">
+                  <form className="space-y-4">
                     <div className="space-y-2">
-                      <label htmlFor="phone" className="text-sm font-medium">
-                        Email
-                      </label>
                       <Input
                         id="email"
                         type="email"
                         placeholder="Enter your Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                       />
                     </div>
                     <Button 
                     className="w-full" 
                     onClick={handleSendOTP}
-                    disabled={!email || loading}
+                    type="submit"
                     >
                       {loading ? <Spinner variant="ellipsis"/> : "Send OTP"}
                     </Button>
-                  </div>
+                  </form>
                 ) : (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
