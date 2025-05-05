@@ -61,11 +61,11 @@ export default function Navbar() {
   const containerVariants = {
     normal: {
       width: '100%',
-      transition: { type: "spring", stiffness: 200, damping: 60 },
+      transition: { type: "spring", stiffness: 300, damping: 15 },
     },
     shrunk: {
-      width: '700px',
-      transition: { type: "spring", stiffness: 200, damping: 60 },
+      width: '720px',
+      transition: { type: "spring", stiffness: 300, damping: 15 },
     },
   };
 
@@ -75,13 +75,13 @@ export default function Navbar() {
       initial="hidden"
       animate="visible"
       variants={navVariants}
-      className={`fixed w-full top-0 left-0 z-50  flex justify-center py-2`}
+      className={`fixed w-screen top-0 left-0 z-50  flex justify-center py-2`}
     >
       <motion.div
         variants={containerVariants}
         initial="normal"
         animate={isScrolled ? "shrunk" : "normal"}
-        className={`container-custom bg-background flex items-center justify-between shadow-lg dark:shadow-white/10 rounded-full py-1 px-6`}
+        className={`container-custom w-full bg-background flex items-center justify-between shadow-lg dark:shadow-white/10 rounded-full py-1`}
       >
         <div className="flex items-center gap-2">
           <Link href="/" className="text-xl font-bold flex items-center gap-2">

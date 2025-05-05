@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const jobs = [
   {
     company: "E-Cell IIT Bombay",
+    id: "e-cell-iit-bombay",
     role: "Frontend React Developer",
     duration: "August 2024 - October 2024",
     date: "2024-10-24",
@@ -20,6 +21,7 @@ const jobs = [
   },
   {
     company: "XYZ Agency",
+    id: "xyz-agency",
     role: "Junior Frontend Developer",
     duration: "February 2024 - March 2024",
     date: "2024-02-14",
@@ -40,7 +42,7 @@ const testimonials = [
     content: "Bashar's ability to translate complex requirements into elegant code is remarkable. He delivered our project ahead of schedule and exceeded all our expectations.",
     avatar: "https://i.pravatar.cc/150?img=1",
     company: "TechCorp",
-    date: "March 2023"
+    date: "Janury 2025"
   },
 ];
 
@@ -48,12 +50,12 @@ export default function Experience() {
   const [activeTab, setActiveTab] = useState("Netflix");
   const [progress, setProgress] = useState(0);
   const isMobile = useIsMobile();
-  
+
   useEffect(() => {
     const timer = setTimeout(() => setProgress(100), 500);
     return () => clearTimeout(timer);
   }, []);
-  
+
   return (
     <section id="experience" className="min-h-screen pt-24 section">
       <div className="container-custom">
@@ -68,7 +70,7 @@ export default function Experience() {
           <AnimateOnScroll>
             <h3 className="text-xl font-medium mb-8 text-center">What People Say</h3>
           </AnimateOnScroll>
-          
+
           <Carousel className="w-full max-w-3xl mx-auto">
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
@@ -108,7 +110,7 @@ export default function Experience() {
           <AnimateOnScroll>
             <h3 className="text-xl font-medium mb-8 text-center">Tech Career Timeline</h3>
           </AnimateOnScroll>
-          
+
           {isMobile ? (
             // Mobile view - cards only
             <div className="space-y-8">
@@ -159,9 +161,23 @@ export default function Experience() {
                         <AnimateOnScroll key={job.company}>
                           <div className="relative">
                             {/* Timeline Dot */}
-                            <div className="absolute left-[-1.90rem] top-1 w-4 h-4 rounded-full bg-accent z-10"></div>
-                            
-                            <div className="mb-1 font-medium">{job.company}</div>
+                            <div className="absolute left-[-1.90rem] top-0 w-4 h-4 rounded-full bg-accent z-10"></div>
+                            <a
+                              className="cursor-pointer"
+                              href={`#${job.id}`}
+                              onClick={(e) => {
+                                e.preventDefault(); 
+                                const targetElement = document.getElementById(job.id);
+                                if (targetElement) {
+                                  targetElement.scrollIntoView({
+                                    behavior: "smooth", 
+                                    block: "center",    
+                                  });
+                                }
+                              }}
+                            >
+                              <div className="mb-1 font-medium">{job.company}</div>
+                            </a>
                             <div className="flex items-center text-sm text-muted-foreground">
                               <Calendar className="h-3.5 w-3.5 mr-1.5" />
                               <span>{job.duration}</span>
@@ -179,7 +195,7 @@ export default function Experience() {
                 <div className="space-y-8">
                   {sortedJobs.map((job, index) => (
                     <AnimateOnScroll key={job.company}>
-                      <Card className="p-6 border border-border hover:border-accent/50 transition-all">
+                      <Card id={job.id} className="p-6 border border-border hover:border-accent/50 transition-all">
                         <h4 className="text-lg font-semibold">{job.company}</h4>
                         <p className="text-accent font-medium text-sm mb-4">{job.role}</p>
                         <div className="flex items-center gap-2 mb-4 text-muted-foreground text-sm">

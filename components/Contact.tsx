@@ -70,7 +70,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className={`section min-h-screen ${isContactPage ? "pt-28" : ""}`}>
+    <section id="contact" className={`section min-h-screen flex items-center justify-center ${isContactPage ? "pt-28" : ""}`}>
       <div className="container-custom">
         <AnimateOnScroll>
           <div className="text-center mb-12">

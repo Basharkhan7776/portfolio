@@ -28,7 +28,7 @@ export default function Resume() {
 
     // Send phone number to Telegram bot
     const botToken = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID;
+    const chatId = process.env.NEXT_PUBLIC_TELEGRAM_BOT_CHAT_ID;
     const message = `New Resume Request:\n Email: ${email}`;
 
     try {

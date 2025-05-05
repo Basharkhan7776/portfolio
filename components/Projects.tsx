@@ -15,28 +15,22 @@ import roomChat from "@/assets/screenshots/roomChat.png";
 import weatherApp from "@/assets/screenshots/weatherApp.png";
 import anaMsg from "@/assets/screenshots/anaMsg.png";
 import calculator from "@/assets/screenshots/calculator.png";
+import ghibliVerse from "@/assets/screenshots/ghibliVerse.png";
 
 const projects = [
   {
     title: "Portfolio Website",
+    id: "portfolio",
     description: "A modern portfolio website built with React, featuring smooth animations and a clean design.",
-    tags: ["React", "Tailwind CSS", "Framer Motion"],
+    tags: ["Next", "Tailwind CSS", "Framer Motion"],
     imageUrl: portfolio,
     liveUrl: "/",
     githubUrl: "https://github.com/Basharkhan7776/portfolio",
     date: "April 2025"
   },
   {
-    title: "Agri-Mitra",
-    description: "A full-stack web application for farmers to manage their crops, track weather data, and connect with local markets.",
-    tags: ["React", "Firebase", "Flutter", "Gemini"],
-    imageUrl: agriMitra,
-    liveUrl: "https://agri-mitra-web.vercel.app/",
-    githubUrl: "https://github.com/Basharkhan7776/AgriMitra",
-    date: "March 2025"
-  },
-  {
     title: "Culture Connect",
+    id: "cultureConnect",
     description: "A social networking platform for cultural exchange, allowing users to share experiences and connect with others.",
     tags: ["React", "Firebase", "Google Cloud", "Tailwind CSS"],
     imageUrl: cultureConnect,
@@ -46,24 +40,47 @@ const projects = [
   },
   {
     title: "Brainly",
+    id: "brainly",
     description: "Brainly is a web application designed to help users organize and share their knowledge and learning resources. The application allows users to create, store, and share notes, links, and other types of content.",
     tags: ["React", "Node", "Express", "MongoDB", "Tailwind"],
     imageUrl: brainly,
-    liveUrl: "/not-found",
+    liveUrl: "https://app-brainly.vercel.app/",
     githubUrl: "https://github.com/Basharkhan7776/Brainly",
     date: "January 2025"
   },
   {
+    title: "Ghibli Verse",
+    id: "ghibliVerse",
+    description: "Ghibli Verse is a unique NFT marketplace for Ghibli-inspired digital art on the Solana blockchain.",
+    tags: ["Next", "Tailwind CSS", "Solana", "Gorq AI"],
+    imageUrl: ghibliVerse,
+    liveUrl: "https://app-ghibliverse.vercel.app/",
+    githubUrl: "https://github.com/Basharkhan7776/Ghibli-verse",
+    date: "May 2025"
+  },
+  {
+    title: "Agri-Mitra",
+    id: "agriMitra",
+    description: "A full-stack web application for farmers to manage their crops, track weather data, and connect with local markets.",
+    tags: ["React", "Firebase", "Flutter", "Gemini"],
+    imageUrl: agriMitra,
+    liveUrl: "https://agri-mitra-web.vercel.app/",
+    githubUrl: "https://github.com/Basharkhan7776/AgriMitra",
+    date: "March 2025"
+  },
+  {
     title: "Room Chat App",
+    id: "roomChatApp",
     description: "Room-Chat-App is a simple chat application that allows users to create and join chat rooms, and send messages to other users in the same room.",
     tags: ["React", "Node", "Web Socket", "Tailwind"],
     imageUrl: roomChat,
-    liveUrl: "/not-found",
+    liveUrl: "https://roomchatapp.vercel.app/",
     githubUrl: "https://github.com/Basharkhan7776/Room-Chat-App",
     date: "January 2025"
   },
   {
     title: "Anonymous Message App",
+    id: "anonymousMessageApp",
     description: "An anonymous messaging application that allows users to send and receive messages without revealing their identities.",
     tags: ["HTML", "CSS", "Javascript", "API"],
     imageUrl: anaMsg,
@@ -73,6 +90,7 @@ const projects = [
   },
   {
     title: "Calculator App",
+    id: "calculatorApp",
     description: "A simple yet elegant Calculator project built using HTML, CSS, and JavaScript.",
     tags: ["HTML", "CSS", "Javascript"],
     imageUrl: calculator,
@@ -82,6 +100,7 @@ const projects = [
   },
   {
     title: "Weather App",
+    id: "weatherApp",
     description: "A simple and responsive Weather application built using HTML, CSS, and JavaScript.",
     tags: ["HTML", "CSS", "Javascript", "API"],
     imageUrl: weatherApp,
@@ -98,7 +117,7 @@ const sortedProjects = [...projects].sort((a, b) => {
 
 export default function Projects() {
   const [progress, setProgress] = useState(0);
-  const featuredProjects = sortedProjects.slice(0, 3);
+  const featuredProjects = projects.slice(0, 3);
   const timelineProjects = sortedProjects;
   const isMobile = useIsMobile();
 
@@ -124,7 +143,18 @@ export default function Projects() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProjects.map((project, index) => (
               <AnimatedCard key={project.title} delay={index * 0.1}>
-                <Card className="h-full flex flex-col overflow-hidden group border border-border hover:border-accent/50 transition-all">
+                <Card
+                  className="h-full flex flex-col overflow-hidden cursor-pointer group border border-border hover:border-accent/50 transition-all"
+                  onClick={() => {
+                    const targetElement = document.getElementById(project.id);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
+                    }
+                  }}
+                >
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={project.imageUrl.src}
@@ -170,6 +200,7 @@ export default function Projects() {
               </AnimatedCard>
             ))}
           </div>
+
         </div>
 
         {/* Timeline Projects - Timeline on left, cards on right */}
@@ -254,9 +285,21 @@ export default function Projects() {
                         <AnimateOnScroll key={project.title}>
                           <div className="relative">
                             {/* Timeline Dot */}
-                            <div className="absolute left-[-1.9rem] top-1 w-4 h-4 rounded-full bg-accent z-10"></div>
-
-                            <div className="mb-1 font-medium">{project.title}</div>
+                            <div className="absolute left-[-1.9rem] top-0 w-4 h-4 rounded-full bg-accent z-10"></div>
+                            <a
+                              className="cursor-pointer"
+                              href={`#${project.id}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                const targetElement = document.getElementById(project.id);
+                                if (targetElement) {
+                                  targetElement.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "center",
+                                  });
+                                }
+                              }}
+                            ><div className="mb-1 font-medium">{project.title}</div></a>
                             <div className="flex items-center text-sm text-muted-foreground">
                               <Calendar className="h-3.5 w-3.5 mr-1.5" />
                               <span>{project.date}</span>
@@ -270,11 +313,11 @@ export default function Projects() {
               </div>
 
               {/* Project cards on right */}
-              <div className="md:w-2/3">
+              <div className="md:w-2/3 ">
                 <div className="space-y-8">
                   {timelineProjects.map((project, index) => (
                     <AnimateOnScroll key={project.title}>
-                      <Card className="border border-border hover:border-accent/50 transition-all overflow-hidden">
+                      <Card className="border border-border snap-center snap-always hover:border-accent/50 transition-all overflow-hidden" id={project.id}>
                         <div className="md:flex">
                           <div className="md:w-1/3 h-48 md:h-auto">
                             <img

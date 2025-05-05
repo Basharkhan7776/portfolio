@@ -11,7 +11,7 @@ export default function Hero() {
   const { theme } = useTheme();
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20">
+    <section className="relative min-h-screen flex items-center">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(#1c1c1c_1px,transparent_1px)] [background-size:32px_32px] dark:bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] opacity-50"></div>
 
       <div className="container-custom">
@@ -37,7 +37,7 @@ export default function Hero() {
 
             <FadeIn delay={1.2}>
               <p className="text-muted-foreground mb-8 max-w-2xl mx-auto md:mx-0">
-                I'm a software Developer specializing in building (and occasionally designing)
+                I'm a software developer specializing in building (and occasionally designing)
                 exceptional digital experiences. Currently, I'm focused on building accessible,
                 human-centered products.
               </p>
