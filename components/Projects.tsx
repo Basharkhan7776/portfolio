@@ -64,7 +64,7 @@ const projects = [
     description: "A full-stack web application for farmers to manage their crops, track weather data, and connect with local markets.",
     tags: ["React", "Firebase", "Flutter", "Gemini"],
     imageUrl: agriMitra,
-    liveUrl: "https://agri-mitra-web.vercel.app/",
+    liveUrl: "https://web-agrimitra.vercel.app/",
     githubUrl: "https://github.com/Basharkhan7776/AgriMitra",
     date: "March 2025"
   },

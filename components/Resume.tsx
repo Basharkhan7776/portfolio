@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import React , { useState } from "react";
 import { AnimateOnScroll } from "./ui/motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,7 +20,8 @@ export default function Resume() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSendOTP = async () => {
+  const handleSendOTP = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!email || !email.includes("@")) {
       toast.error("Please enter a valid email address");
       return;
@@ -110,7 +111,7 @@ export default function Resume() {
                 </p>
 
                 {!showOTP ? (
-                  <form className="space-y-4">
+                  <form className="space-y-4" onSubmit={handleSendOTP}>
                     <div className="space-y-2">
                       <Input
                         id="email"
@@ -123,7 +124,6 @@ export default function Resume() {
                     </div>
                     <Button 
                     className="w-full" 
-                    onClick={handleSendOTP}
                     type="submit"
                     >
                       {loading ? <Spinner variant="ellipsis"/> : "Send OTP"}
